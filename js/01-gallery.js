@@ -19,7 +19,11 @@ galleryList.addEventListener("click", onGalleryItemClick);
 function onGalleryItemClick(event) {
   event.preventDefault();
 
-  if (!event.target.closest(".gallery__image")) {
+  //   if (!event.target.closest(".gallery__image")) {
+  //     return;
+  //   }
+
+  if (event.target.nodeName !== "IMG") {
     return;
   }
 
@@ -27,7 +31,11 @@ function onGalleryItemClick(event) {
   const alt = event.target.alt;
 
   const instance = basicLightbox.create(
-    `<img src="${source}" alt="${alt}" width="800">`
+    `<img src="${source}" alt="${alt}" width="800">`,
+    {
+      onShow: (instance) => window.addEventListener("keydown", modalClose),
+      onClose: (instance) => window.removeEventListener("keydown", modalClose),
+    }
   );
 
   instance.show();
